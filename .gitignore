@@ -1,0 +1,4 @@
+.env
+.blobs/
+/granth
+*.log

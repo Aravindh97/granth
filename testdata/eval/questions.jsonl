@@ -1,0 +1,44 @@
+{"id":"q01","query":"How many earned leave days do I get each month?","doc":"leave-policy.md","evidence":"1.5 days of earned leave"}
+{"id":"q02","query":"maximum earned leave carry forward","doc":"leave-policy.md","evidence":"capped at 45 days"}
+{"id":"q03","query":"When do I need a doctor's note for being sick?","doc":"leave-policy.md","evidence":"medical certificate"}
+{"id":"q04","query":"How long is maternity leave?","doc":"leave-policy.md","evidence":"26 weeks"}
+{"id":"q05","query":"paternity leave duration for new fathers","doc":"leave-policy.md","evidence":"10 working days"}
+{"id":"q06","query":"Is unused sick leave paid out when I resign?","doc":"leave-policy.md","evidence":"Sick leave is never encashed"}
+{"id":"q07","query":"how many public holidays","doc":"leave-policy.md","evidence":"12 public holidays"}
+{"id":"q08","query":"How early must domestic flights be booked?","doc":"travel-policy.md","evidence":"14 days before travel"}
+{"id":"q09","query":"Who approves business class tickets?","doc":"travel-policy.md","evidence":"Vice President approval"}
+{"id":"q10","query":"hotel limit per night in Bengaluru","doc":"travel-policy.md","evidence":"7,500"}
+{"id":"q11","query":"What is the hotel budget in Coimbatore?","doc":"travel-policy.md","evidence":"Coimbatore"}
+{"id":"q12","query":"daily allowance for food on domestic trips","doc":"travel-policy.md","evidence":"1,200"}
+{"id":"q13","query":"deadline to submit expense claims after a trip","doc":"travel-policy.md","evidence":"within 30 days"}
+{"id":"q14","query":"reimbursement rate for using my own car","doc":"travel-policy.md","evidence":"12 per kilometre"}
+{"id":"q15","query":"minimum password length","doc":"infosec-policy.md","evidence":"14 characters"}
+{"id":"q16","query":"Do I have to rotate my password every 90 days?","doc":"infosec-policy.md","evidence":"not on a fixed schedule"}
+{"id":"q17","query":"Which systems need MFA?","doc":"infosec-policy.md","evidence":"Multi-factor authentication is mandatory"}
+{"id":"q18","query":"I lost my laptop, how quickly must I report it?","doc":"infosec-policy.md","evidence":"within 2 hours"}
+{"id":"q19","query":"Can I email Aadhaar numbers?","doc":"infosec-policy.md","evidence":"Restricted data may not be sent over email"}
+{"id":"q20","query":"how to report a phishing email","doc":"infosec-policy.md","evidence":"Report Phish"}
+{"id":"q21","query":"documents needed to register a new supplier","doc":"vendor-onboarding.html","evidence":"GST registration certificate"}
+{"id":"q22","query":"How long does finance take to approve a vendor?","doc":"vendor-onboarding.html","evidence":"5 working days"}
+{"id":"q23","query":"standard payment terms for vendors","doc":"vendor-onboarding.html","evidence":"45 days from the invoice date"}
+{"id":"q24","query":"payment terms for logistics vendors","doc":"vendor-onboarding.html","evidence":"Logistics"}
+{"id":"q25","query":"Who approves advance payments above 2 lakh?","doc":"vendor-onboarding.html","evidence":"CFO approval"}
+{"id":"q26","query":"how is a vendor bank account verified","doc":"vendor-onboarding.html","evidence":"penny-drop"}
+{"id":"q27","query":"price of a polo t-shirt","doc":"product-catalog.csv","evidence":"KT-1002"}
+{"id":"q28","query":"minimum order quantity for hoodies","doc":"product-catalog.csv","evidence":"Hoodie"}
+{"id":"q29","query":"lead time for track pants","doc":"product-catalog.csv","evidence":"Track pants"}
+{"id":"q30","query":"which product uses organic cotton","doc":"product-catalog.csv","evidence":"Organic cotton"}
+{"id":"q31","query":"I forgot my password, how do I reset it?","doc":"it-helpdesk-faq.txt","evidence":"self-service portal"}
+{"id":"q32","query":"VPN not working from home","doc":"it-helpdesk-faq.txt","evidence":"restart the VPN client"}
+{"id":"q33","query":"How do I get ERP access?","doc":"it-helpdesk-faq.txt","evidence":"ERP access form"}
+{"id":"q34","query":"helpdesk opening hours","doc":"it-helpdesk-faq.txt","evidence":"8 AM to 8 PM"}
+{"id":"q35","query":"fabric roll rejection criteria in inspection","doc":"quality-manual.pdf","evidence":"40 penalty points"}
+{"id":"q36","query":"AQL level for major defects in final audit","doc":"quality-manual.pdf","evidence":"AQL 2.5"}
+{"id":"q37","query":"allowed measurement tolerance for chest","doc":"quality-manual.pdf","evidence":"1 cm"}
+{"id":"q38","query":"colour fastness requirement","doc":"quality-manual.pdf","evidence":"grade 4"}
+{"id":"q39","query":"कार्यालय का समय क्या है","doc":"office-hours-hi.md","evidence":"सुबह 9 बजे"}
+{"id":"q40","query":"घर से काम कितने दिन","doc":"office-hours-hi.md","evidence":"दो दिन"}
+{"id":"q41","query":"देर से आने पर क्या होगा","doc":"office-hours-hi.md","evidence":"आधे दिन"}
+{"id":"q42","query":"தீ பயிற்சி எப்போது","doc":"safety-tamil.md","evidence":"தீ பயிற்சி"}
+{"id":"q43","query":"விபத்து அறிக்கை நேரம்","doc":"safety-tamil.md","evidence":"24 மணி"}
+{"id":"q44","query":"what should dyeing unit workers wear","doc":"safety-tamil.md","evidence":"கையுறைகள்"}

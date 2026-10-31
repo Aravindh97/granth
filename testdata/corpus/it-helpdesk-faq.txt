@@ -1,0 +1,11 @@
+IT Helpdesk FAQ
+
+How do I reset my password? Go to the self-service portal at reset.kaveri.example and verify with your registered mobile number. The helpdesk cannot see or tell you your password.
+
+The VPN does not connect from home. Check that your laptop date and time are correct, then restart the VPN client. If it still fails, raise a ticket with the error code shown.
+
+How do I get access to the ERP? Your manager raises an access request in the ERP access form. Access is granted within 1 working day after approval.
+
+What are the helpdesk hours? The helpdesk is open from 8 AM to 8 PM, Monday to Saturday. For urgent production outages outside these hours, call the on-call number printed on your ID card.
+
+Can I install my own software? No. Request software through the software catalogue; IT installs only licensed and approved software.
