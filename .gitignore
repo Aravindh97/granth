@@ -2,3 +2,5 @@
 .blobs/
 /granth
 *.log
+dist/
+cmd/web/embed/
