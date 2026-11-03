@@ -20,3 +20,21 @@ jobs:
       - run: go test -tags integration ./internal/store
         env: {DATABASE_URL: "postgres://granth:ci-only-password@localhost:5432/granth?sslmode=disable"}
       - run: OCR=none go run ./cmd/granth eval
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with: {go-version: "1.26"}
+      - uses: actions/setup-node@v4
+        with: {node-version: "24", cache: npm, cache-dependency-path: web/package-lock.json}
+      - name: TypeScript types match the Go structs
+        if: hashFiles('cmd/tsgen/main.go') != ''
+        run: go run ./cmd/tsgen && git diff --exit-code web/src/types.gen.ts
+      - run: npm ci
+        working-directory: web
+      - run: npm run typecheck
+        working-directory: web
+      - run: npm test
+        working-directory: web
+      - run: ./web/build.sh dist

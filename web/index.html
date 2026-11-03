@@ -2,95 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>granth · document search with citations for AI agents</title>
-<link rel="stylesheet" href="style.css">
-<style>.res { border-left:3px solid var(--go); background:#f5fbfd; border-radius:6px; padding:8px 10px; margin-top:8px }
-.res pre { white-space:pre-wrap; margin:4px 0 0; font-size:12.5px } .chips button { margin:4px 4px 0 0; font-size:12px; padding:4px 9px }</style>
+<title>granth · search with citations</title>
+<script src="./wasm_exec.js"></script>
 </head>
 <body>
-<header>
-  <h1>granth <span>· search with citations, for agents</span></h1>
-  <p>Documents are parsed by layout, chunked under their headings and indexed for keyword (BM25) and vector search, fused with reciprocal rank fusion. Every result says exactly where it came from. The parser, chunker, index and search from the repo run here as Go WebAssembly.</p>
-  <p><a href="https://github.com/Aravindh97/granth">Source and README</a> (the full version ingests on Temporal workflows into OpenSearch, with a Postgres dead-letter ledger) · <span class="muted" id="info"></span></p>
-</header>
-<main class="loading">
-  <section class="card wide">
-    <h2><b>1</b> · Ask the corpus</h2>
-    <div class="row"><input id="q" size="60" value="What is the hotel budget in Coimbatore?">
-      <select id="mode"><option value="hybrid">hybrid (BM25 + vector)</option><option value="lexical">BM25 only</option><option value="vector">vector only</option></select>
-      <button id="ask">Search</button></div>
-    <div class="chips" id="chips"></div>
-    <div id="results"></div>
-  </section>
-  <section class="card">
-    <h2><b>2</b> · Documents</h2>
-    <table id="docs"></table>
-    <div class="row"><input type="file" id="file" accept=".md,.txt,.html,.htm,.csv,.pdf"><button class="ghost" id="up">Ingest my file</button></div>
-    <div id="upout" class="muted">Markdown, text, HTML, CSV or PDF with a text layer, up to 5 MB. It stays in this tab.</div>
-  </section>
-  <section class="card">
-    <h2><b>3</b> · Messy files</h2>
-    <button class="ghost" id="badb">Parse the repo's broken files</button>
-    <table id="bad"></table>
-    <div class="muted">Permanent failures are recorded once with the failing step and never retried. Anything else is retried with backoff for up to an hour.</div>
-  </section>
-  <section class="card wide">
-    <h2><b>4</b> · Retrieval eval: 44 labelled questions</h2>
-    <button id="evalb">Run</button>
-    <table id="eval"></table>
-    <div id="misses" class="muted"></div>
-  </section>
-  <section class="card wide">
-    <h2><b>5</b> · The MCP tool an agent calls</h2>
-    <div class="row"><input id="mq" size="50" value="who approves business class tickets"><button class="ghost" id="mcpb">Send tools/call search</button></div>
-    <pre class="out" id="mcpout"></pre>
-  </section>
-</main>
-<footer>The browser version uses the in-memory index and the offline hashing embedder (lexical, not semantic) and has no OCR. The README's OpenSearch numbers come from the full version.</footer>
-<script src="wasm_exec.js"></script><script src="gowasm.js"></script>
-<script>
-const examples = ["What is the hotel budget in Coimbatore?", "Do I have to rotate my password every 90 days?", "Which systems need MFA?", "lead time for track pants", "AQL level for major defects in final audit", "कार्यालय का समय क्या है"];
-$("chips").innerHTML = examples.map(q => `<button class="ghost">${esc(q)}</button>`).join("");
-$("chips").querySelectorAll("button").forEach(b => b.onclick = () => { $("q").value = b.textContent; ask(); });
-async function ask() {
-  const r = await api("GET", `search?q=${encodeURIComponent($("q").value)}&mode=${$("mode").value}&k=3`);
-  $("results").innerHTML = r.results.map((x, i) => {
-    const c = x.citation;
-    return `<div class="res"><div class="mono">#${i + 1} ${esc(c.source_uri.split("/").pop())} · page ${c.page} · ${esc((c.heading_path || []).join(" › "))} · blocks ${c.block_start}–${c.block_end}</div>
-      <div class="muted">rank in BM25: ${x.trace.lexical_rank || "–"} · rank in vector: ${x.trace.vector_rank || "–"} · fused score ${x.trace.fused_score.toFixed(4)}</div><pre>${esc(x.snippet)}</pre></div>`;
-  }).join("") + `<div class="muted">${r.took_us} µs</div>`;
-}
-async function docs() {
-  const d = await api("GET", "docs");
-  $("info").textContent = `${d.docs.length} documents, ${d.chunks} chunks, ingested in ${d.ingest_ms} ms`;
-  $("docs").innerHTML = "<tr><th>File</th><th>Format</th><th class=num>Pages</th><th class=num>Chunks</th></tr>" + d.docs.map(x =>
-    `<tr><td>${esc(x.uri.split("/").pop())}${x.uploaded ? ' <span class="pill ok">yours</span>' : ""}</td><td>${x.format}</td><td class=num>${x.pages}</td><td class=num>${x.chunks}</td></tr>`).join("");
-}
-$("ask").onclick = () => run($("ask"), ask);
-$("q").onkeydown = (e) => { if (e.key === "Enter") ask(); };
-$("up").onclick = () => run($("up"), async () => {
-  const f = $("file").files[0]; if (!f) throw new Error("choose a file first");
-  const buf = new Uint8Array(await f.arrayBuffer()); let bin = ""; for (let i = 0; i < buf.length; i += 8192) bin += String.fromCharCode(...buf.subarray(i, i + 8192));
-  const r = await api("POST", "upload", {Name: f.name, Data: btoa(bin)});
-  $("upout").innerHTML = r.error ? `<span class="bad">${esc(r.error)}</span><br>${esc(r.class)}` : `<span class="ok">ingested ${esc(r.doc.title)}: ${r.doc.chunks} chunks</span>. Ask it something above.`;
-  await docs();
-});
-$("badb").onclick = async () => {
-  const r = await api("POST", "bad");
-  $("bad").innerHTML = "<tr><th>File</th><th>Result</th></tr>" + r.map(x => `<tr><td class=mono>${esc(x.file)}</td><td><span class="bad">${esc(x.result)}</span><br><span class=muted>${esc(x.class || "")}</span></td></tr>`).join("");
-};
-$("evalb").onclick = () => run($("evalb"), async () => {
-  const r = await api("POST", "eval");
-  $("eval").innerHTML = "<tr><th>Mode</th><th class=num>hit@1</th><th class=num>hit@5</th><th class=num>MRR@10</th><th class=num>citation@1</th><th class=num>p50</th></tr>" + r.rows.map(x =>
-    `<tr><td>${x.mode}</td><td class=num>${x.hit1.toFixed(3)}</td><td class=num>${x.hit5.toFixed(3)}</td><td class=num>${x.mrr.toFixed(3)}</td><td class=num>${x.cite1.toFixed(3)}</td><td class=num>${x.p50_us} µs</td></tr>`).join("");
-  $("misses").innerHTML = "Misses in the top 5: " + r.misses.map(m => `<div>[${m.mode}] ${esc(m.query)} → wanted ${esc(m.want)}, got ${esc(m.got || "nothing")}</div>`).join("");
-});
-$("mcpb").onclick = async () => {
-  const req = {jsonrpc: "2.0", id: 1, method: "tools/call", params: {name: "search", arguments: {query: $("mq").value, k: 2, max_tokens: 300}}};
-  const r = await api("POST", "mcp", req);
-  $("mcpout").textContent = "→ " + JSON.stringify(req) + "\n\n← " + JSON.stringify(r.result.structuredContent, null, 1);
-};
-docs().then(ask);
-</script>
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
